@@ -1,0 +1,48 @@
+assert = function(expression = true, errorMessage = "See above for more details.")
+	prefix = "<color=red><b>ASSERTION FAILURE:</b></color> "
+	message = prefix + errorMessage
+
+	if expression != true then
+		stack = globals.values
+		maybeFunction = stack[-1]
+		varName = globals.indexOf(@maybeFunction)
+		varValue = str(@maybeFunction).remove("FUNCTION")
+		print("Traceback(most recent call):")
+		print("<alpha=#AA>{")
+
+		for pair in globals
+			key = pair.key
+			value = @pair.value
+
+			if typeof(@value) == "function" then
+				stackTraceMessage = key + " : " + str(@value)
+			else if value isa map then
+				stackTraceMessage = key + " : {...}"
+			else if value isa number then
+				if value == false then
+					stackTraceMessage = key + " : 0(false)"
+				else if value == true then
+					stackTraceMessage = key + " : 1(true)"
+				end if
+
+			else
+				stackTraceMessage = key + " : " + value
+			end if
+
+			print("<alpha=#AA>	" + stackTraceMessage)
+		end for
+
+		print("<alpha=#AA>}")
+
+		if typeof(@maybeFunction) == "function" then
+			print("at function call: <u>" + varName + varValue + "</u>")
+
+		else
+			print("at declaration: <u>" + varName + " = " + varValue + "</u>")
+		end if
+
+		print("")
+		exit(message)
+	end if
+
+end function

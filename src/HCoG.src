@@ -1,0 +1,105 @@
+#include Debugging.src
+
+_controls = {}
+_controls.up = "uparrow"
+_controls.down = "downarrow"
+_controls.back = "leftarrow"
+_controls.choose = "rightarrow"
+
+setControls = function(controlsName, key)
+	doesExist = false
+
+	for pair in _controls
+		name = pair.key
+		key_ = pair.value
+
+		if name == controlsName then
+			doesExist = true
+		end if
+
+	end for
+
+	assert(doesExist == true)
+	_controls[controlsName] = key
+end function
+
+_keyboard = {}
+_keyboard.lastPressed = char(0)
+
+getch = function()
+	return user_input(char(0), false, true).lower
+end function
+
+getLastGetch = function()
+	return _keyboard.lastPressed
+end function
+
+_button = {}
+_button.iter = 0
+_button.current = 0
+
+button = function(text, callback)
+	assert(text isa string)
+
+	assert(typeof(@callback) == "function")
+
+	if _button.iter == _button.current then
+		text = "<u>" + text + "</u>"
+
+		if _keyboard.lastPressed == _controls.choose then
+			_keyboard.lastPressed = char(0)
+			_button.iter = 0
+			_button.current = 0
+			wrapper(@callback)
+			_logic.nogetch = true
+		end if
+	end if
+
+	print(text)
+	_button.iter = _button.iter + 1
+end function
+
+_logic = {}
+_logic.nogetch = false
+
+wrapper = function(tuiFunction)
+	assert(typeof(@tuiFunction) == "function")
+
+	while true
+		_button.iter = 0
+		clear_screen
+		tuiFunction
+
+		if _logic.nogetch == true then
+			_logic.nogetch = false
+			continue
+		end if
+
+		_keyboard.lastPressed = getch
+
+		if _keyboard.lastPressed == _controls.back then
+			_keyboard.lastPressed = char(0)
+			_button.current = 0
+			break
+		end if
+
+		if _keyboard.lastPressed == _controls.up then
+			if _button.current <= 0 then
+				_button.current = 0
+			else
+				_button.current = _button.current - 1
+			end if
+
+		else if _keyboard.lastPressed == _controls.down then
+			if _button.current >= _button.iter - 1 then
+				_button.current = _button.iter - 1
+			else
+				_button.current = _button.current + 1
+			end if
+
+		end if
+
+		yield
+	end while
+
+end function
