@@ -7,7 +7,7 @@ Important note: this is __NOT A REAL LIBRARY__! This has been made, works and wi
 
 ## Objectives
 
-The main objective of this library is to easen the building of keyboard controlled CLI/TUI programs.
+The main objective of this library is to make the building of keyboard-driven CLI/TUI programs easier.
 
 
 ## Documentation
@@ -22,8 +22,8 @@ You can find full documentation at our [wiki](https://github.com/h4cktoria/HCoG/
 
 ## Usage Guide
 
-1. Download the latest release and copy it to the game
-2. ```import_code()``` it and use it.
+1. Download the latest [release](https://github.com/h4cktoria/HCoG/releases/tag/HCoG) and copy it to the game
+2. ```import_code()``` and use it.
 
 For more pleasant usage, I would recommend you to read through the [wiki](https://github.com/h4cktoria/HCoG/wiki)
 
