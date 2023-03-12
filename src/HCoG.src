@@ -30,6 +30,12 @@ getch = function()
 	return user_input(char(0), false, true).lower
 end function
 
+nogetch = function()
+	_button.iter = 0
+	_button.current = 0
+	_logic.stopIter = true
+end function
+
 getLastGetch = function()
 	return _keyboard.lastPressed
 end function
@@ -61,6 +67,7 @@ end function
 
 _logic = {}
 _logic.nogetch = false
+_logic.stopIter = false
 
 wrapper = function(tuiFunction)
 	assert(typeof(@tuiFunction) == "function")
@@ -69,6 +76,11 @@ wrapper = function(tuiFunction)
 		_button.iter = 0
 		clear_screen
 		tuiFunction
+
+		if _logic.stopIter == true then
+			_logic.stopIter = false
+			break
+		end if
 
 		if _logic.nogetch == true then
 			_logic.nogetch = false

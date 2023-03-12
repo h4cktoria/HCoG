@@ -12,9 +12,7 @@ The main objective of this library is to easen the building of keyboard controll
 
 ## Documentation
 
-You can find full documentation right here.
-
-TODO
+You can find full documentation at our [wiki](https://github.com/h4cktoria/HCoG/wiki).
 
 
 ## Known Bugs
@@ -24,7 +22,11 @@ TODO
 
 ## Usage Guide
 
-TODO
+1. Download the latest release and copy it to the game
+2. ```import_code()``` it and use it.
+
+For more pleasant usage, I would recommend you to read through the [wiki](https://github.com/h4cktoria/HCoG/wiki)
+
 
 
 ## License
