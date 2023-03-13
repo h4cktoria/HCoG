@@ -1,20 +1,39 @@
 #include Debugging.src
 
+// This is soo ridiculous omg
+// Those who read this source code - I am so sorry
+// but with OOP it would be even worser, believe me
+_styling = {}
+_styling.buttonSelectedPrefix = "> "
+_styling.buttonSelectedPostfix = ""
+_styling.buttonPrefix = "- "
+_styling.buttonPostfix = ""
+_styling.labelPrefix = "| "
+_styling.labelPostfix = ""
+
+_styling.setStyle = function(styleOption, styleValue)
+	assert(styleOption isa string)
+	assert(styleOption isa string)
+	_stylingp[styleOption] = styleValue
+end function
+
 _controls = {}
 _controls.up = "uparrow"
 _controls.down = "downarrow"
-_controls.back = "leftarrow"
-_controls.choose = "rightarrow"
+_controls.left = "leftarrow"
+_controls.right = "rightarrow"
+
+_controls.back = "rightshift"
+
+_controls.choose = "rightcontrol"
 
 setControls = function(controlsName, key)
 	doesExist = false
 
 	for pair in _controls
-		name = pair.key
-		key_ = pair.value
-
-		if name == controlsName then
+		if pair.key == controlsName then
 			doesExist = true
+			break
 		end if
 
 	end for
@@ -50,7 +69,7 @@ button = function(text, callback)
 	assert(typeof(@callback) == "function")
 
 	if _button.iter == _button.current then
-		text = "<u>" + text + "</u>"
+		text = _styling.buttonSelectedPrefix + text + _styling.buttonSelectedPostfix
 
 		if _keyboard.lastPressed == _controls.choose then
 			_keyboard.lastPressed = char(0)
@@ -59,10 +78,17 @@ button = function(text, callback)
 			wrapper(@callback)
 			_logic.nogetch = true
 		end if
+	else
+		text = _styling.buttonPrefix + text + _styling.buttonPostfix
 	end if
 
 	print(text)
 	_button.iter = _button.iter + 1
+end function
+
+label = function(text)
+	assert(text isa string)
+	print(_styling.labelPrefix + text + _styling.labelPostfix)
 end function
 
 _logic = {}
