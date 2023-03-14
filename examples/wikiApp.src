@@ -1,0 +1,30 @@
+#include HCoG.src
+
+countTo100 = function()
+	label("Let's count to 100!")
+
+	for i in range(1, 100)
+		label(str(i))
+		wait(0.3)
+	end for
+
+	label("We have successfully counted to 100!")
+	label("Press left control to return to the main menu.")
+	nogetch
+end function
+
+main = function()
+	label("Hello world!")
+	button("Count to 100", @countTo100)
+	button("Count to 100", @countTo100)
+	button("Count to 100", @countTo100)
+	button("Count to 100", @countTo100)
+	button("Count to 100", @countTo100)
+	inputBox("inputBox")
+end function
+
+// setControls("up", "w")
+// setControls("down", "s")
+// setControls("back", "a")
+// setControls("choose", "d")
+wrapper(@main)

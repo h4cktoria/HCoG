@@ -1,0 +1,22 @@
+// This is a unit for auxiliary functions.
+
+// Used to make code more expressive and clean inside of main source.
+
+map.hasKey = function(key)
+	for pair in self
+		if pair.key == key then
+			return true
+		end if
+
+	end for
+	return false
+end function
+
+isFunction = function(maybeFunction)
+	return typeof(@maybeFunction) == "function"
+
+end function
+
+isBoolean = function(maybeBoolean)
+	return maybeBoolean isa number and (maybeBoolean == true or maybeBoolean == false)
+end function

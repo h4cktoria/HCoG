@@ -1,3 +1,7 @@
+// This is a unit for debugging utilities.
+
+// Used to make debugging easier in main source.
+
 assert = function(expression = true, errorMessage = "See above for more details.")
 	prefix = "<color=red><b>ASSERTION FAILURE:</b></color> "
 	message = prefix + errorMessage

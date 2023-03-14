@@ -1,4 +1,5 @@
 #include Debugging.src
+#include Auxiliary.src
 
 // This is soo ridiculous omg
 // Those who read this source code - I am so sorry
@@ -10,11 +11,16 @@ _styling.buttonPrefix = "- "
 _styling.buttonPostfix = ""
 _styling.labelPrefix = "| "
 _styling.labelPostfix = ""
+_styling.inputBoxPrefix = "~ "
+_styling.inputBoxPostfix = ""
+_styling.inputBoxSelectedPrefix = char(187) + " "
+_styling.inputBoxSelectedPostfix = ""
 
-_styling.setStyle = function(styleOption, styleValue)
-	assert(styleOption isa string)
-	assert(styleOption isa string)
-	_stylingp[styleOption] = styleValue
+setStyle = function(styleOption, styleValue)
+	assert(styleOption isa string, "setStyle(styleOption, styleValue): styleOption must be a string!")
+	assert(styleValue isa string, "setStyle(styleOption, styleValue): styleValue must be a string!")
+	assert(_styling.hasKey(styleOption), "setStyle(styleOption, styleValue): can't change style that doesn't exist!")
+	_styling[styleOption] = styleValue
 end function
 
 _controls = {}
@@ -23,22 +29,14 @@ _controls.down = "downarrow"
 _controls.left = "leftarrow"
 _controls.right = "rightarrow"
 
-_controls.back = "rightshift"
+_controls.choose = "rightshift"
 
-_controls.choose = "rightcontrol"
+_controls.back = "rightcontrol"
 
 setControls = function(controlsName, key)
-	doesExist = false
-
-	for pair in _controls
-		if pair.key == controlsName then
-			doesExist = true
-			break
-		end if
-
-	end for
-
-	assert(doesExist == true)
+	assert(controlsName isa string, "setControls(controlsName, key): controlsName must be a string!")
+	assert(_styling.hasKey(controlsName), "setControls(controlsName, key): can't change controls that doesn't exist!")
+	assert(key isa string, "setControls(controlsName, key): key must be a string!")
 	_controls[controlsName] = key
 end function
 
@@ -64,9 +62,9 @@ _button.iter = 0
 _button.current = 0
 
 button = function(text, callback)
-	assert(text isa string)
+	assert(text isa string, "button(text, callback): text must be a string!")
 
-	assert(typeof(@callback) == "function")
+	assert(isFunction(@callback), "button(text, callback): callback must be a function!")
 
 	if _button.iter == _button.current then
 		text = _styling.buttonSelectedPrefix + text + _styling.buttonSelectedPostfix
@@ -86,8 +84,36 @@ button = function(text, callback)
 	_button.iter = _button.iter + 1
 end function
 
+inputBox = function(boxText, inputText = "Input: ", isHidden = false)
+	assert(boxText isa string, "button(boxText, inputText, isHidden): boxText must be a string!")
+	assert(inputText isa string, "button(boxText, inputText, isHidden): inputText must be a string!")
+	assert(isBoolean(isHidden), "button(boxText, inputText, isHidden): isHidden must be a boolean!")
+
+	callback = function()
+		user_input(inputText, isHidden)
+		nogetch
+	end function
+
+	if _button.iter == _button.current then
+		boxText = _styling.inputBoxSelectedPrefix + boxText + _styling.inputBoxSelectedPostfix
+
+		if _keyboard.lastPressed == _controls.choose then
+			_keyboard.lastPressed = char(0)
+			_button.iter = 0
+			_button.current = 0
+			wrapper(@callback)
+			_logic.nogetch = true
+		end if
+	else
+		boxText = _styling.inputBoxPrefix + boxText + _styling.inputBoxPostfix
+	end if
+
+	print(boxText)
+	_button.iter = _button.iter + 1
+end function
+
 label = function(text)
-	assert(text isa string)
+	assert(text isa string, "label(text): text must be a string!")
 	print(_styling.labelPrefix + text + _styling.labelPostfix)
 end function
 
@@ -96,7 +122,7 @@ _logic.nogetch = false
 _logic.stopIter = false
 
 wrapper = function(tuiFunction)
-	assert(typeof(@tuiFunction) == "function")
+	assert(isFunction(@tuiFunction), "wrapper(tuiFunction): tuiFunction must be a function!")
 
 	while true
 		_button.iter = 0
