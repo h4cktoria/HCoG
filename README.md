@@ -2,6 +2,8 @@
 
 _Unleash your Terminal User Interface builder!_
 
+TODO: Some GIFs with examples of HCoG Applications
+
 Important note: this is __NOT A REAL LIBRARY__! This has been made, works and will work only in the game called Grey Hack!
 
 
@@ -22,11 +24,16 @@ You can find full documentation at our [wiki](https://github.com/h4cktoria/HCoG/
 
 ## Usage Guide
 
+TODO: Migrate it to releases page
+
 1. Download the latest [release](https://github.com/h4cktoria/HCoG/releases/tag/HCoG) and copy it to the game
 2. ```import_code()``` and use it.
 
 For more pleasant usage, I would recommend you to read through the [wiki](https://github.com/h4cktoria/HCoG/wiki)
 
+## Frequently Asked Questions
+
+TODO
 
 
 ## License
