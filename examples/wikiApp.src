@@ -9,22 +9,25 @@ countTo100 = function()
 	end for
 
 	label("We have successfully counted to 100!")
-	label("Press left control to return to the main menu.")
+	wait
 	nogetch
 end function
 
-main = function()
-	label("Hello world!")
-	button("Count to 100", @countTo100)
-	button("Count to 100", @countTo100)
-	button("Count to 100", @countTo100)
-	button("Count to 100", @countTo100)
-	button("Count to 100", @countTo100)
-	inputBox("inputBox")
+stateHandling = function()
+	initVar("testVar", "Nothing here so far...")
+	label("Current value of 'testVar': " + queryVar("testVar"))
+	inputBox("Change 'testVar'", "testVar")
 end function
 
-// setControls("up", "w")
-// setControls("down", "s")
-// setControls("back", "a")
-// setControls("choose", "d")
+main = function()
+	label("Main menu of WikiApp.")
+	label("Use arrows to navigate.")
+
+	label("Use RShift to press button.")
+
+	label("Use RCTRL to quit.")
+	button("Count to 100", @countTo100)
+	button("State handling", @stateHandling)
+end function
+
 wrapper(@main)

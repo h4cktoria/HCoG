@@ -1,6 +1,34 @@
 #include Debugging.src
 #include Auxiliary.src
 
+_state = {}
+
+setVar = function(name, value = "NOT_SETTED_EXPLICITLY")
+	assert(name isa string, "setVar(name, value): name must be a string!")
+	assert(value != "NOT_SETTED_EXPLICITLY", "setVar(name, value): value must be setted explicitly!")
+	_state[name] = value
+end function
+
+queryVar = function(name)
+	assert(name isa string, "queryVar(name): name must be a string!")
+
+	if _state.hasKey(name) then
+		return _state[name]
+	else
+		return null
+	end if
+end function
+
+initVar = function(name, value = "NOT_SETTED_EXPLICITLY")
+	assert(name isa string, "initVar(name, value): name must be a string!")
+	assert(value != "NOT_SETTED_EXPLICITLY", "initVar(name, value): value must be setted explicitly!")
+
+	if queryVar(name) == null then
+		setVar(name, value)
+	end if
+
+end function
+
 // This is soo ridiculous omg
 // Those who read this source code - I am so sorry
 // but with OOP it would be even worser, believe me
@@ -13,7 +41,7 @@ _styling.labelPrefix = "| "
 _styling.labelPostfix = ""
 _styling.inputBoxPrefix = "~ "
 _styling.inputBoxPostfix = ""
-_styling.inputBoxSelectedPrefix = char(187) + " "
+_styling.inputBoxSelectedPrefix = "> "
 _styling.inputBoxSelectedPostfix = ""
 
 setStyle = function(styleOption, styleValue)
@@ -33,11 +61,11 @@ _controls.choose = "rightshift"
 
 _controls.back = "rightcontrol"
 
-setControls = function(controlsName, key)
-	assert(controlsName isa string, "setControls(controlsName, key): controlsName must be a string!")
-	assert(_styling.hasKey(controlsName), "setControls(controlsName, key): can't change controls that doesn't exist!")
-	assert(key isa string, "setControls(controlsName, key): key must be a string!")
-	_controls[controlsName] = key
+setControls = function(controlsOption, key)
+	assert(controlsOption isa string, "setControls(controlsOption, key): controlsOption must be a string!")
+	assert(_styling.hasKey(controlsOption), "setControls(controlsOption, key): can't change controls that doesn't exist!")
+	assert(key isa string, "setControls(controlsOption, key): key must be a string!")
+	_controls[controlsOption] = key
 end function
 
 _keyboard = {}
@@ -84,13 +112,15 @@ button = function(text, callback)
 	_button.iter = _button.iter + 1
 end function
 
-inputBox = function(boxText, inputText = "Input: ", isHidden = false)
-	assert(boxText isa string, "button(boxText, inputText, isHidden): boxText must be a string!")
-	assert(inputText isa string, "button(boxText, inputText, isHidden): inputText must be a string!")
-	assert(isBoolean(isHidden), "button(boxText, inputText, isHidden): isHidden must be a boolean!")
+inputBox = function(boxText, stateVarName, inputText = "Input: ", isHidden = false)
+	assert(boxText isa string, "button(boxText, stateVarName, inputText, isHidden): boxText must be a string!")
+	assert(stateVarName isa string, "button(boxText, stateVarName, inputText, isHidden): stateVarName must be a string!")
+	assert(_state.hasKey(stateVarName), "button(boxText, stateVarName, inputText, isHidden): create stateVarName first!")
+	assert(inputText isa string, "button(boxText, stateVarName, inputText, isHidden): inputText must be a string!")
+	assert(isBoolean(isHidden), "button(boxText, stateVarName, inputText, isHidden): isHidden must be a boolean!")
 
 	callback = function()
-		user_input(inputText, isHidden)
+		_state[stateVarName] = user_input(inputText, isHidden)
 		nogetch
 	end function
 
